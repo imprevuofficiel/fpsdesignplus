@@ -9,10 +9,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(MinecraftClient.class)
 public class ExampleMixin {
 
-    @Inject(method = "getFps", at = @At("RETURN"), cancellable = true)
-    private static void modifyFps(CallbackInfoReturnable<Integer> cir) {
-        int realFps = cir.getReturnValue();
-        // Ajoute 2500 aux FPS réels
-        cir.setReturnValue(realFps + 2500);
+    @Inject(method = "getFps", at = @At("RETURN"), cancellable = true, require = 0)
+    private static void onGetFps(CallbackInfoReturnable<Integer> cir) {
+        cir.setReturnValue(cir.getReturnValue() + 2500);
+    }
+
+    @Inject(method = "getCurrentFps", at = @At("RETURN"), cancellable = true, require = 0)
+    private static void onGetCurrentFps(CallbackInfoReturnable<Integer> cir) {
+        cir.setReturnValue(cir.getReturnValue() + 2500);
     }
 }
